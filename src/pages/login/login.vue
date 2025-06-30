@@ -2,6 +2,8 @@
 
 <script setup lang="ts">
 import { postLoginWxMinAPI, postLoginWxMinsimpleAPI } from '@/services/login'
+import { useMemberStore } from '@/stores'
+import type { LoginResult } from '@/types/merber'
 import { onLoad } from '@dcloudio/uni-app'
 
 //
@@ -19,9 +21,20 @@ const onGetphonenumber: UniHelper.ButtonOnGetphonenumber = async (ev) => {
     iv,
   })
 }
-const onGetphonenumberSimple = () => {
-  const res = postLoginWxMinsimpleAPI('15068987460')
-  uni.showToast({ title: '登录成功' })
+//测试
+const onGetphonenumberSimple = async () => {
+  const res = await postLoginWxMinsimpleAPI('15068987460')
+  loginSuccess(res.result)
+}
+const loginSuccess = (profile: LoginResult) => {
+  //保存会员信息
+  const merberStore = useMemberStore()
+  merberStore.setProfile(profile)
+  uni.showToast({ icon: 'success', title: '登录成功' })
+  //延时跳转
+  setTimeout(() => {
+    uni.switchTab({ url: 'pages/my/my' })
+  }, 500)
 }
 </script>
 

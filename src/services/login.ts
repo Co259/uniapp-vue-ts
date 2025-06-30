@@ -1,3 +1,4 @@
+import type { LoginResult } from '@/types/merber'
 import { http } from '@/utils/http'
 
 type LoginParams = {
@@ -10,7 +11,7 @@ type LoginParams = {
  * @param data 登录参数
  */
 export const postLoginWxMinAPI = (data: LoginParams) => {
-  return http({
+  return http<LoginResult>({
     method: 'POST',
     url: '/login/wxMin',
     data,
@@ -21,7 +22,7 @@ export const postLoginWxMinAPI = (data: LoginParams) => {
  * @param phoneNumber 模拟手机号码
  */
 export const postLoginWxMinsimpleAPI = (phoneNumber: string) => {
-  return http({
+  return http<LoginResult>({
     method: 'POST',
     url: '/login/wxMin',
     data: {
