@@ -9,6 +9,7 @@ import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
 import type { XtxGuessInstance } from '@/types/component'
 import Pageskeleton from './components/Pageskeleton.vue'
+import { useGuessList } from '@/composables'
 // 轮播图数据
 const BannerList = ref<BannerItem[]>([])
 const getHomeBannerData = async () => {
@@ -37,10 +38,7 @@ onLoad(async () => {
   isLoading.value = false
 })
 //加载更多
-const guessRef = ref<XtxGuessInstance>()
-const onScrolltolower = () => {
-  guessRef.value?.getMore()
-}
+const { guessRef, onScrolltolower } = useGuessList()
 const isTrigger = ref(false)
 const onRefresherrefresh = async () => {
   //开启刷新
