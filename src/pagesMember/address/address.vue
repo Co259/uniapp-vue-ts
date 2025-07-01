@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getMemberAddressAPI } from '@/services/address'
+import { deleteMemberAddressbyIdAPI, getMemberAddressAPI } from '@/services/address'
 import type { AddressItem } from '@/types/address'
-import { onLoad, onShow, onUnload } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
 //获取地址列表
@@ -13,16 +13,31 @@ const getMemberAddressData = async () => {
 onShow(() => {
   getMemberAddressData()
 })
+//删除地址
+const onDeleteAddress = (id: string) => {
+  uni.showModal({
+    content: '确定要删除吗？',
+    success: async (res) => {
+      if (res.confirm) {
+        // 删除
+        await deleteMemberAddressbyIdAPI(id)
+        // 重新获取
+        getMemberAddressData()
+      }
+    },
+  })
+}
 </script>
 
 <template>
   <view class="viewport">
     <!-- 地址列表 -->
     <scroll-view class="scroll-view" scroll-y>
-      <view v-if="true" class="address">
+      <view v-if="addressList.length" class="address">
         <view class="address-list">
           <!-- 收货地址项 -->
           <view class="item" v-for="item in addressList" :key="item.id">
+            <!--默认插槽-->
             <view class="item-content">
               <view class="user">
                 {{ item.receiver }}
@@ -38,6 +53,12 @@ onShow(() => {
                 修改
               </navigator>
             </view>
+            <button
+              @tap="($event) => onDeleteAddress(item.id)"
+              style="background-color: antiquewhite"
+            >
+              删除
+            </button>
           </view>
         </view>
       </view>
