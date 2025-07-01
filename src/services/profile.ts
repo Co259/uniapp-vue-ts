@@ -1,3 +1,4 @@
+import type { ProfileDetail } from '@/types/merber'
 import { http } from '@/utils/http'
 
 /**
@@ -5,7 +6,7 @@ import { http } from '@/utils/http'
  * GET /member/proflie
  */
 export const getMemberProfileAPI = () => {
-  return http({
+  return http<ProfileDetail>({
     method: 'GET',
     url: '/member/profile',
   })
