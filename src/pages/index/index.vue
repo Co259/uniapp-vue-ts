@@ -7,7 +7,6 @@ import { ref } from 'vue'
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
-import type { XtxGuessInstance } from '@/types/component'
 import Pageskeleton from './components/Pageskeleton.vue'
 import { useGuessList } from '@/composables'
 // 轮播图数据

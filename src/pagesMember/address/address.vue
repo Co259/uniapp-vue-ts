@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getMemberAddressAPI } from '@/services/address'
 import type { AddressItem } from '@/types/address'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow, onUnload } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
 //获取地址列表
@@ -10,7 +10,7 @@ const getMemberAddressData = async () => {
   const res = await getMemberAddressAPI()
   addressList.value = res.result
 }
-onLoad(() => {
+onShow(() => {
   getMemberAddressData()
 })
 </script>
