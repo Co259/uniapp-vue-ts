@@ -20,6 +20,7 @@ const onGetphonenumber: UniHelper.ButtonOnGetphonenumber = async (ev) => {
     encryptedData,
     iv,
   })
+  loginSuccess(res.result)
 }
 //测试
 const onGetphonenumberSimple = async () => {
@@ -33,8 +34,8 @@ const loginSuccess = (profile: LoginResult) => {
   uni.showToast({ icon: 'success', title: '登录成功' })
   //延时跳转
   setTimeout(() => {
-    uni.switchTab({ url: 'pages/my/my' })
-  }, 500)
+    uni.switchTab({ url: '/pages/my/my' })
+  }, 1000)
 }
 </script>
 
@@ -62,7 +63,7 @@ const loginSuccess = (profile: LoginResult) => {
         </view>
         <view class="options">
           <!-- 通用模拟登录 -->
-          <button @tap="onGetphonenumberSimple">
+          <button @click="onGetphonenumberSimple">
             <text class="icon icon-phone">模拟快捷登录</text>
           </button>
         </view>

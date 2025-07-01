@@ -94,5 +94,34 @@
 				"selectedIconPath": "static/tabs/user_selected.png"
 			}
 		]
+	},
+	"subPackages": [
+		{
+			"root": "pagesMember",
+			"pages": [
+				{
+					"path": "settings/settings",
+					"style": {
+						"navigationBarTitleText": "设置"
+					}
+				},
+				{
+					"path": "profile/profile",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "个人信息"
+					}
+				}
+			]
+		}
+	],
+	"preloadRule": {
+		"pages/my/my": {
+			"network": "all",
+			"packages": [
+				"pagesMember"
+			]
+		}
 	}
 }

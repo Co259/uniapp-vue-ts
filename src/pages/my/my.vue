@@ -4,6 +4,7 @@
 import { useGuessList } from '@/composables'
 import { useMemberStore } from '@/stores'
 import type { XtxGuessInstance } from '@/types/component'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
 // 获取屏幕边界到安全区域距离
