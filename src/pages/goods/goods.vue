@@ -7,6 +7,7 @@ import { ref } from 'vue'
 import AddressPanel from './components/AddressPanel.vue'
 import ServicePanel from './components/ServicePanel.vue'
 import PageSkeleton from './components/PageSkeleton.vue'
+import type { SkuPopupLocaldata } from '@/components/vk-data-goods-sku-popup/vk-data-goods-sku-popup'
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
@@ -14,9 +15,33 @@ const query = defineProps<{
   id: string
 }>()
 const goods = ref<GoodsResult>()
+// 获取商品详情
 const getGoodsByIdData = async () => {
   const res = await getGoodsByIdAPI(query.id)
   goods.value = res.result
+  //SKU弹窗数据
+  localdata.value = {
+    _id: res.result.id,
+    name: res.result.name,
+    goods_thumb: res.result.mainPictures[0],
+    spec_list: res.result.specs.map((v) => {
+      return {
+        name: v.name,
+        list: v.values,
+      }
+    }),
+    sku_list: res.result.skus.map((v) => {
+      return {
+        _id: v.id,
+        goods_id: res.result.id,
+        goods_name: res.result.name,
+        image: v.picture,
+        price: v.price * 100,
+        stock: v.inventory,
+        sku_name_arr: v.specs.map((vv) => vv.valueName),
+      }
+    }),
+  }
 }
 const isLoading = ref(false)
 onLoad(() => {
@@ -44,11 +69,17 @@ const openPopup = (name: typeof PopupName.value) => {
   PopupName.value = name
   popup.value?.open()
 }
+//SKU弹窗条件
+const isShowsku = ref(false)
+//SKU弹窗数据
+const localdata = ref({} as SkuPopupLocaldata)
 </script>
 
 <template>
   <PageSkeleton v-if="isLoading" />
   <template v-else>
+    <!--SKU 弹窗 -->
+    <vk-data-goods-sku-popup v-model="isShowsku" :localdata="localdata" />
     <scroll-view scroll-y class="viewport">
       <!-- 基本信息 -->
       <view class="goods">
@@ -78,7 +109,7 @@ const openPopup = (name: typeof PopupName.value) => {
 
         <!-- 操作面板 -->
         <view class="action">
-          <view class="item arrow">
+          <view @tap="($event) => (isShowsku = true)" class="item arrow">
             <text class="label">选择</text>
             <text class="text ellipsis"> 请选择商品规格 </text>
           </view>
