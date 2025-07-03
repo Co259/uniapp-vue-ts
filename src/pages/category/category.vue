@@ -20,6 +20,7 @@ const getCategoryData = async () => {
   const res = await getCategoryTopAPI()
   categoryList.value = res.result
 }
+// 二级分类
 const subCategoryList = computed(() => {
   return categoryList.value[activeIndex.value]?.children || []
 })
