@@ -55,6 +55,28 @@ const onChangeSelectedAll = () => {
   })
   putMemberCartSelectedAPI({ selected: _isSelectedAll })
 }
+//选中单品列表
+const selectedCartList = computed(() => {
+  return cartList.value.filter((item) => item.selected)
+})
+//计算选中总件数
+const selectedCartListCount = computed(() => {
+  return selectedCartList.value.reduce((total, item) => total + item.count, 0)
+})
+//计算选中总价格
+const selectedCartListMoney = computed(() => {
+  return selectedCartList.value
+    .reduce((total, item) => total + item.nowPrice * item.count, 0)
+    .toFixed(2)
+})
+//付款按钮
+const gotoPayment = () => {
+  if (selectedCartListCount.value === 0) {
+    return uni.showToast({ title: '请选择商品', icon: 'none' })
+  }
+  // 跳转到结算页面
+  uni.showToast({ title: '正在跳转', icon: 'none' })
+}
 onShow(() => {
   if (memberStore.profile) {
     getMemberCartData()
@@ -129,9 +151,15 @@ onShow(() => {
       <view class="toolbar">
         <text @tap="onChangeSelectedAll" class="all" :class="{ checked: isSelectedAll }">全选</text>
         <text class="text">合计:</text>
-        <text class="amount">100</text>
+        <text class="amount">{{ selectedCartListMoney }}</text>
         <view class="button-grounp">
-          <view class="button payment-button" :class="{ disabled: true }"> 去结算(10) </view>
+          <view
+            @tap="gotoPayment"
+            class="button payment-button"
+            :class="{ disabled: selectedCartListCount === 0 }"
+          >
+            去结算({{ selectedCartListCount }})
+          </view>
         </view>
       </view>
     </template>
