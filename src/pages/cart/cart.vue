@@ -5,7 +5,7 @@ import type { CartItem } from '@/types/cart'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
-//
+// 获取会员购物车数据
 const memberStore = useMemberStore()
 const cartList = ref<CartItem[]>([])
 const getMemberCartData = async () => {

@@ -34,9 +34,9 @@ const onDeleteAddress = (id: string) => {
     <!-- 地址列表 -->
     <scroll-view class="scroll-view" scroll-y>
       <view v-if="addressList.length" class="address">
-        <view class="address-list">
+        <uni-swipe-action class="address-list">
           <!-- 收货地址项 -->
-          <view class="item" v-for="item in addressList" :key="item.id">
+          <uni-swipe-action-item class="item" v-for="item in addressList" :key="item.id">
             <!--默认插槽-->
             <view class="item-content">
               <view class="user">
@@ -53,14 +53,13 @@ const onDeleteAddress = (id: string) => {
                 修改
               </navigator>
             </view>
-            <button
-              @tap="($event) => onDeleteAddress(item.id)"
-              style="background-color: antiquewhite"
-            >
-              删除
-            </button>
-          </view>
-        </view>
+            <template #right>
+              <button @tap="($event) => onDeleteAddress(item.id)" class="delete-button">
+                删除
+              </button>
+            </template>
+          </uni-swipe-action-item>
+        </uni-swipe-action>
       </view>
       <view v-else class="blank">暂无收货地址</view>
     </scroll-view>
