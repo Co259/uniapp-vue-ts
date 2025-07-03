@@ -14,7 +14,6 @@ const BannerList = ref<BannerItem[]>([])
 const getHomeBannerData = async () => {
   const res = await getHomeBannerAPI()
   BannerList.value = res.result
-  console.log(res)
 }
 // 分类数据
 const categoryList = ref<CategoryItem[]>([])
@@ -27,7 +26,6 @@ const hotlist = ref<HotItem[]>([])
 const getHomeHotData = async () => {
   const res = await getHomeHotAPI()
   hotlist.value = res.result
-  console.log(res)
 }
 const isLoading = ref(false)
 // 加载数据

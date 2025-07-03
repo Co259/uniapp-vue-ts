@@ -15,7 +15,6 @@ const hotMap = [
 const query = defineProps<{
   type: string
 }>()
-// console.log(query)
 // 获取当前url
 const currUrlMap = hotMap.find((v) => v.type === query.type)
 uni.setNavigationBarTitle({ title: currUrlMap!.title })

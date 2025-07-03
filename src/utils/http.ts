@@ -16,7 +16,6 @@ const httpInterceptor = {
     // 添加token
     const memberStore = useMemberStore()
     const token = memberStore.profile?.token
-    console.log(options)
     if (token) {
       options.header.Authorization = token
     }
