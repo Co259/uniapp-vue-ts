@@ -21,3 +21,14 @@ export const getMemberCartAPI = () => {
     url: '/member/cart',
   })
 }
+/**
+ * 删除购物车单品/清空
+ * @param data 请求体参数 ids SKUID集合
+ */
+export const deleteMemberCartAPI = (data: { ids: string[] }) => {
+  return http({
+    method: 'DELETE',
+    url: '/member/cart',
+    data,
+  })
+}
