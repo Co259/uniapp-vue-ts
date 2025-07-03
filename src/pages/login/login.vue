@@ -1,10 +1,14 @@
 // src/pages/login/login.vue
 
 <script setup lang="ts">
+import { getMemberAddressAPI } from '@/services/address'
 import { postLoginWxMinAPI, postLoginWxMinsimpleAPI } from '@/services/login'
 import { useMemberStore } from '@/stores'
+import { useMemberAddress } from '@/stores/modules/address'
+import type { AddressItem } from '@/types/address'
 import type { LoginResult } from '@/types/merber'
 import { onLoad } from '@dcloudio/uni-app'
+import { ref } from 'vue'
 
 //
 let code = ''
@@ -12,6 +16,12 @@ onLoad(async () => {
   const res = await wx.login()
   code = res.code
 })
+const addressList = ref<AddressItem[]>([])
+const getMemberAddressData = async () => {
+  const res_address = await getMemberAddressAPI()
+  addressList.value = res_address.result
+  console.log('3', res_address.result)
+}
 const onGetphonenumber: UniHelper.ButtonOnGetphonenumber = async (ev) => {
   const encryptedData = ev.detail!.encryptedData!
   const iv = ev.detail!.iv!
@@ -27,10 +37,14 @@ const onGetphonenumberSimple = async () => {
   const res = await postLoginWxMinsimpleAPI('15068987460')
   loginSuccess(res.result)
 }
-const loginSuccess = (profile: LoginResult) => {
+const loginSuccess = async (profile: LoginResult) => {
   //保存会员信息
   const merberStore = useMemberStore()
   merberStore.setProfile(profile)
+  await getMemberAddressData()
+  const memberAddress = useMemberAddress()
+  console.log('2', addressList)
+  memberAddress.setAddress(addressList.value || [])
   uni.showToast({ icon: 'success', title: '登录成功' })
   //延时跳转
   setTimeout(() => {

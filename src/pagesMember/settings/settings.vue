@@ -1,5 +1,21 @@
 <script setup lang="ts">
+import { useMemberStore } from '@/stores'
+
 //
+const onQuit = () => {
+  //
+  uni.showModal({
+    content: '是否退出登陆',
+    success: (res) => {
+      if (res.confirm) {
+        //
+        const memberStore = useMemberStore()
+        memberStore.clearProfile()
+        uni.navigateBack()
+      }
+    },
+  })
+}
 </script>
 
 <template>
@@ -22,7 +38,7 @@
     </view>
     <!-- 操作按钮 -->
     <view class="action">
-      <view class="button">退出登录</view>
+      <view class="button" @tap="onQuit">退出登录</view>
     </view>
   </view>
 </template>

@@ -9,7 +9,9 @@ const addressList = ref<AddressItem[]>([])
 const getMemberAddressData = async () => {
   const res = await getMemberAddressAPI()
   addressList.value = res.result
+  console.log('1', addressList)
 }
+
 onShow(() => {
   getMemberAddressData()
 })

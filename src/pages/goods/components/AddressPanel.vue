@@ -1,6 +1,24 @@
 // AddressPanel.vue
 <script setup lang="ts">
-const emit = defineEmits<{ (event: 'close'): void }>()
+import { useMemberAddress } from '@/stores/modules/address'
+import type { AddressItem } from '@/types/address'
+import { ref } from 'vue'
+
+const emit = defineEmits<{
+  (event: 'close'): void
+  (event: 'confirm', address: AddressItem): void
+}>()
+const confirm = () => {
+  const selected = memberAddress.addressList[activeIndex.value]
+  emit('confirm', selected)
+  emit('close')
+}
+const memberAddress = useMemberAddress()
+//选择地址
+const activeIndex = ref(0)
+const onAddAddress = () => {
+  uni.navigateTo({ url: '/pagesMember/address-form/address-form' })
+}
 </script>
 
 <template>
@@ -11,25 +29,22 @@ const emit = defineEmits<{ (event: 'close'): void }>()
     <view class="title">配送至</view>
     <!-- 内容 -->
     <view class="content">
-      <view class="item">
-        <view class="user">李明 13824686868</view>
-        <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
-        <text class="icon icon-checked"></text>
-      </view>
-      <view class="item">
-        <view class="user">王东 13824686868</view>
-        <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
-        <text class="icon icon-ring"></text>
-      </view>
-      <view class="item">
-        <view class="user">张三 13824686868</view>
-        <view class="address">北京市朝阳区孙河安平北街6号院</view>
-        <text class="icon icon-ring"></text>
+      <view
+        class="item"
+        v-for="(item, index) in memberAddress.addressList"
+        :key="item.id"
+        @tap="activeIndex = index"
+      >
+        <view class="user">{{ item.receiver + ' ' + item.contact }}</view>
+        <view class="address">{{ item.address }}</view>
+        <text class="icon icon-checked" :class="{ active: activeIndex === index }"></text>
       </view>
     </view>
     <view class="footer">
-      <view class="button primary"> 新建地址 </view>
-      <view v-if="false" class="button primary">确定</view>
+      <view class="button primary" @tap="onAddAddress"> 新建地址 </view>
+      <view v-if="memberAddress.addressList.length" class="button primary" @tap="confirm"
+        >确定</view
+      >
     </view>
   </view>
 </template>
@@ -79,8 +94,14 @@ const emit = defineEmits<{ (event: 'close'): void }>()
     top: 50%;
     right: 0;
   }
+  // .icon-checked {
+  //   color: #27ba9b;
   .icon-checked {
-    color: #27ba9b;
+    color: #ccc; // 默认灰色
+    transition: all 0.3s ease;
+  }
+  .icon-checked.active {
+    color: #27ba9b; // 选中绿色
   }
   .icon-ring {
     color: #444;
